@@ -1,7 +1,6 @@
 const fsPromises = require('node:fs/promises');
 const fs = require("fs");
 
-// fsPromises.mkdir("./04-copy-directory/files-copy");
 
 
 fs.readdir("./04-copy-directory/files", (err, files) => {
