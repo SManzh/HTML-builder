@@ -1,13 +1,19 @@
 const fs = require("fs");
 const path = require("path");
+const fsPromises = fs.promises;
 
-fs.readdirSync("./03-files-in-folder/secret-folder", {withFileTypes: true}).
-  forEach((dirEntry) => {
-    if (dirEntry.isFile()) {
-      
-      console.log(dirEntry.name.toString().substring(0, dirEntry.name.toString().indexOf(".")) + " - " + 
-        path.extname(dirEntry.name).toString().substring(1) + " - " + fs.statSync("./03-files-in-folder/secret-folder/" + 
-        dirEntry.name).size + " bytes");
+fsPromises.readdir("./03-files-in-folder/secret-folder", {withFileTypes: true}).
+  then((dirEntry) => {
+    dirEntry.forEach(dirEntry => {
+          if (dirEntry.isFile()) { 
+            const filePath = path.join(__dirname, 'secret-folder', dirEntry.name);
+            const fileName = path.basename(filePath);
+            const ext = path.extname(filePath);
+
+            fsPromises.stat(filePath).then(res => {
+                console.log(`${fileName.replace(ext, '')} - ${ext.replace('.', '')} - ${Number(res.size)} bytes`)
+            })
       
     }
+  })
   });
